@@ -1,0 +1,5 @@
+---
+- name: Copy installation file to local directory
+  copy:
+          src: /etc/ansible/roles/tasks/install_git.yml
+          dest: /home/ansible_project
