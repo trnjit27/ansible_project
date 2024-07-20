@@ -1,0 +1,31 @@
+---
+- name: Playbook to demonstrate IaC for AWS
+  hosts: localhost
+  become: true
+
+  vars_files:
+          - /root/ansible_project/vars/aws_key.yml
+  
+  pre_tasks:
+          - name: Install the package pip
+            apt:
+                    name: pip
+                    state: present
+                           
+          - name: Install the packages boto and boto3
+            pip:
+                    name:
+                            - boto
+                            - boto3
+                    state: present
+
+  tasks:
+          - name: Get VPC info for a particular region
+            ec2_vpc_net_info:
+                    aws_access_key: "{{aws_access_key}}"
+                    aws_secret_key: "{{aws_secret_key}}"
+                    region: us-east-1
+            register: foo
+
+          - debug: var=foo.vpcs
+
