@@ -1,0 +1,19 @@
+---
+- name: Display date
+  hosts: localhost
+  become: true
+
+  pre_tasks:
+          - name: Update cache
+            apt:
+                    update_cache: true
+
+  tasks:
+          - name: Register value of date command
+            command:
+                    cmd: date
+            register: foo
+
+          - name: Display date
+            debug: var=foo.stdout
+
