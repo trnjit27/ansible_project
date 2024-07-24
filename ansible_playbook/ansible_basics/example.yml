@@ -1,0 +1,36 @@
+---
+- name: File module example playbook
+  hosts: localhost
+  
+  # vars:
+  #        - package: apache2
+  #        - grp: amrit  
+  tasks:
+          - name: Create a group
+            group:
+                    name: "{{grp}}"
+                    state: present
+            register: foo
+          - name: Create a directory dir in /tmp
+            file:
+                    path: /tmp/dir/projects
+                    state: directory
+                    owner: taran
+                    group: "{{grp}}"
+                    mode: '0644'
+                    recurse: yes
+          - name: Show hostname and IP address
+            debug:
+                    msg: The hostname & OS distribution of the server is {{ansible_hostname}} and {{ansible_os_family}}
+          - name: Install apache service
+            apt:
+                    name: "{{package}}"
+                    state: present
+            tags: installation
+          - debug: var=foo
+          - name: Start apache service
+            sysvinit: 
+                    name: "{{package}}"
+                    state: started
+                    enabled: yes
+            tags: service
