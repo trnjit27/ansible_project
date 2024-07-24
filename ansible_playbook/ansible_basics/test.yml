@@ -1,0 +1,19 @@
+---
+- name: Test Playbook
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+          - name: Register date to a variable
+            command:
+                    cmd: date
+            register: foo
+
+          - name: Display date
+            debug: var=foo.stdout
+
+- name: Another playbook
+  hosts: localhost
+
+  tasks:
+          - debug: msg="Hi"
