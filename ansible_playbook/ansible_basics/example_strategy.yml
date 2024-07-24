@@ -1,0 +1,40 @@
+---
+- name: Playbook example for task execution strategy
+  hosts: all
+  become: true
+
+  # strategy: free   it allows tasks to execute in any manner of execution
+  # serial: 1   it means tasks will be executed to 1 node at each time
+
+  order: reverse_inventory  
+  # reverse_inventory allows the tasks to be executed in reverse order of nodes in inventory
+
+  pre_tasks:
+         - name: Update cache
+           apt:
+                 update_cache: true
+  
+  tasks:
+
+         - name: Install PIP
+           apt:
+                 name: pip
+                 state: present
+  
+         - name: Task to run only once
+           user:
+                 name: amrit
+                 state: present
+           run_once: true
+           # run_once means the task will run only in one node whichever being first
+
+         - name: Task to run only once and delegated to a specify node
+           file:
+                 path: /root/amrit/projects
+                 state: directory
+                 mode: '0644'
+           run_once: true
+           delegate_to: datanode1
+           # delegate_to allows to run the task to a specify node when running only once
+
+
