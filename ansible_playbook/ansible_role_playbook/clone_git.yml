@@ -1,0 +1,6 @@
+---
+- name: Clone git repo to local directory
+  git:
+          repo: https://github.com/trnjit27/ansible_project
+          dest: /home/ansible_project
+          force: true
