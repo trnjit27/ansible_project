@@ -1,0 +1,34 @@
+---
+- name: This playbook demonstrate different ways to assign tags and work with them
+  hosts: node1
+  become: true
+  gather_facts: false
+
+  pre_tasks:
+          - name: Update cache
+            apt:
+                  update_cache: true
+      
+  tasks:
+       
+          #- name: Task with tag1
+          # apt:
+          #       name: vim
+          #       state: present
+          # tags: vim
+
+          - name: Task with tag taran
+            user:
+                  name: taran
+                  state: present
+            tags: taran
+     
+          - name: Task with always tag
+            debug:
+                   msg: "This is always run task"
+            tags: always
+
+          - name: Task with never tag
+            debug:
+                   msg: "This is never run task. Although has been run when specified forcefully."
+            tags: never           

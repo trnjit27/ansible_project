@@ -1,0 +1,30 @@
+---
+- name: This playbook contains a script which is run at start of playbook
+  hosts: localhost
+  become: true
+  gather_facts: false
+
+  tasks:
+
+          - name: Tasks to run the shell script
+            tags: script
+            block:
+                    - name: Run the script
+                      shell:
+                            cmd: './shellscript.sh'
+                      args:
+                            chdir: /root
+                      register: foo
+            
+                    - name: Display shell scripty output
+                      debug: var=foo.stdout
+     
+          - name: Task with always tag
+            debug:
+                   msg: "This is always run task"
+            tags: always
+
+          - name: Task with never tag
+            debug:
+                   msg: "This is never run task. Although has been run when specified forcefully."
+            tags: never           
